@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Progect12_13.Scripts
 {
     public class GameRule:MonoBehaviour
     {
-        [SerializeField] private TimeController _timeController;
+        [FormerlySerializedAs("_timeController")] [SerializeField] private Timer timer;
         [SerializeField] private CoinStorage _coinStorage;
         [SerializeField] private Ball _ball;
 
@@ -14,7 +15,7 @@ namespace _Progect12_13.Scripts
         private void Start()
         {
             _allCoins = _coinStorage.Count;
-            _timeController.StartCounting();
+            timer.StartCounting();
             _isRunning = true;
         }
 
@@ -23,11 +24,11 @@ namespace _Progect12_13.Scripts
             if (_isRunning == false)
                 return;
             
-            if(_timeController.IsOverTime == false)
+            if(timer.IsOverTime == false)
                 if(IsCollectedAllCoins())
                     WinGame();
             
-            if(_timeController.IsOverTime)
+            if(timer.IsOverTime)
                 if(IsCollectedAllCoins() == false)
                     LoseGame();
                 else
@@ -51,7 +52,7 @@ namespace _Progect12_13.Scripts
 
         private void StopGame()
         {
-            _timeController.StopTimer();
+            timer.StopTimer();
             _ball.gameObject.SetActive(false);
             _isRunning = false;
         }

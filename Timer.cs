@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _Progect12_13.Scripts
 {
-    public class TimeController : MonoBehaviour
+    public class Timer : MonoBehaviour
     {
         [SerializeField] private float _time;
 
