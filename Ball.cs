@@ -1,33 +1,32 @@
 using UnityEngine;
 
-namespace _Progect12_13.Scripts
+namespace _Progect12_13.Scripts.RuleBall
 {
     public class Ball : MonoBehaviour
     {
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private GroundDetector _groundDetector;
 
-        private int _coins;
+        [SerializeField] private float _jumpForce = 10f;
+        [SerializeField] private float _moveSpeed = 5;
 
-        public int Coins => _coins;
+        private Walet _walet = new Walet();
+        public int Coins => _walet.Value;
 
-        public void Move(Vector3 direction, float speed)
+        public void Move(Vector3 direction)
         {
-            _rigidbody.AddForce(direction * speed, ForceMode.Force);
+            _rigidbody.AddForce(direction * _moveSpeed, ForceMode.Force);
         }
 
-        public void Jump(float force)
+        public void Jump()
         {
             if (_groundDetector.IsGrounded == true)
-                _rigidbody.AddForce(Vector3.up * force, ForceMode.Impulse);
+                _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
 
         public void AddCoin(int amount)
         {
-            if (amount < 0)
-                Debug.LogError("AddCoin Error : negative number");
-
-            _coins += amount;
+            _walet.Add(amount);
         }
     }
 }

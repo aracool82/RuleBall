@@ -1,40 +1,43 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace _Progect12_13.Scripts
+namespace _Progect12_13.Scripts.RuleBall
 {
-    public class GameRule:MonoBehaviour
+    public class GameRule : MonoBehaviour
     {
-        [FormerlySerializedAs("_timeController")] [SerializeField] private Timer timer;
-        [SerializeField] private CoinStorage _coinStorage;
+        [SerializeField] private Timer timer;
+        [SerializeField] private Coin[] _coins;
         [SerializeField] private Ball _ball;
 
-        private int _allCoins;
         private bool _isRunning;
         
+        private int _allCoins => _coins.Length;
+
         private void Start()
         {
-            _allCoins = _coinStorage.Count;
-            timer.StartCounting();
-            _isRunning = true;
+            if (_coins.Length == 0)
+            {
+                StopGame();
+                Debug.LogError("No coins found!");
+            }
+            else
+            {
+                timer.StartCounting();
+                _isRunning = true;
+            }
         }
 
         private void Update()
         {
             if (_isRunning == false)
                 return;
-            
-            if(timer.IsOverTime == false)
-                if(IsCollectedAllCoins())
-                    WinGame();
-            
-            if(timer.IsOverTime)
-                if(IsCollectedAllCoins() == false)
+
+            if (timer.IsOverTime )
                     LoseGame();
-                else
-                    WinGame();                
+            else
+                if (IsCollectedAllCoins())
+                    WinGame();
         }
-        
+
         private bool IsCollectedAllCoins()
             => _ball.Coins == _allCoins;
 
